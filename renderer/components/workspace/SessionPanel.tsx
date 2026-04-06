@@ -198,14 +198,16 @@ export default function SessionPanel({ sessionId, panelTitle }: SessionPanelProp
   }, [appendMessage, sessionId, streamState]);
 
   useEffect(() => {
+    const compareControllers = compareControllersRef.current;
+
     return () => {
       controllerRef.current?.dispose();
       controllerRef.current = null;
 
-      for (const controller of compareControllersRef.current.values()) {
+      for (const controller of compareControllers.values()) {
         controller.dispose();
       }
-      compareControllersRef.current.clear();
+      compareControllers.clear();
     };
   }, []);
 

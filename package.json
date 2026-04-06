@@ -20,7 +20,7 @@
     "dist:linux": "npm run build && electron-builder --linux AppImage --publish never",
     "dist:win": "npm run build && electron-builder --win nsis --publish never",
     "dist:mac": "npm run build && electron-builder --mac dmg --publish never",
-    "lint": "next lint renderer",
+    "lint": "eslint \"renderer/**/*.{ts,tsx}\"",
     "test": "vitest run --passWithNoTests",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
