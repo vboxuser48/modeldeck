@@ -1,0 +1,99 @@
+{
+  "name": "modeldeck",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ModelDeck desktop AI workspace",
+  "main": "dist-electron/electron/main.js",
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev:renderer": "next dev renderer -p 3000",
+    "dev:electron": "wait-on tcp:3000 && cross-env ELECTRON_DISABLE_SANDBOX=1 ELECTRON_START_URL=http://localhost:3000 electron .",
+    "dev": "concurrently -k \"npm:dev:renderer\" \"npm:dev:electron\"",
+    "build:renderer": "next build renderer",
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "build": "npm run build:renderer && npm run build:electron",
+    "dist": "npm run build && electron-builder --publish never",
+    "dist:linux": "npm run build && electron-builder --linux AppImage --publish never",
+    "dist:win": "npm run build && electron-builder --win nsis --publish never",
+    "dist:mac": "npm run build && electron-builder --mac dmg --publish never",
+    "lint": "next lint renderer",
+    "test": "vitest run --passWithNoTests",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:ci": "npm run build && npm run test && npm run test:e2e",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.0.0",
+    "dotenv": "^16.4.7",
+    "electron-store": "^10.0.0",
+    "framer-motion": "^11.0.0",
+    "lucide-react": "^0.469.0",
+    "next": "^15.5.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "uuid": "^10.0.0",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^41.1.1",
+    "electron-builder": "^25.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.5.0",
+    "husky": "^9.0.0",
+    "playwright": "^1.49.0",
+    "@playwright/test": "^1.49.0",
+    "postcss": "^8.5.3",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.8.3",
+    "vitest": "^2.0.0",
+    "wait-on": "^8.0.3"
+  },
+  "build": {
+    "appId": "com.modeldeck.app",
+    "productName": "ModelDeck",
+    "artifactName": "ModelDeck-${version}-${os}-${arch}.${ext}",
+    "files": [
+      "dist-electron/**/*",
+      "renderer/out/**/*",
+      "python/**/*",
+      ".env.example",
+      ".nvmrc",
+      ".python-version",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "release"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Utility"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.developer-tools"
+    }
+  }
+}

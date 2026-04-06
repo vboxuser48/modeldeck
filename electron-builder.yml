@@ -1,0 +1,28 @@
+appId: com.modeldeck.app
+productName: ModelDeck
+artifactName: ModelDeck-${version}-${os}-${arch}.${ext}
+files:
+  - dist-electron/**/*
+  - renderer/out/**/*
+  - python/**/*
+  - .env.example
+  - .nvmrc
+  - .python-version
+  - package.json
+directories:
+  output: release
+  buildResources: assets
+linux:
+  target:
+    - AppImage
+  category: Utility
+win:
+  target:
+    - nsis
+mac:
+  target:
+    - dmg
+  category: public.app-category.developer-tools
+publish:
+  provider: github
+  releaseType: draft

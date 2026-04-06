@@ -1,0 +1,26 @@
+[
+  {
+    "id": "debug-code",
+    "name": "Debug code",
+    "description": "Find root cause, reproduce issue, and propose a fix.",
+    "prompt": "Help me debug this issue.\n\nContext:\n- Language/stack:\n- Expected behavior:\n- Actual behavior:\n- Error/log output:\n\nCode:\n```\n[paste code here]\n```\n\nPlease provide:\n1) Likely root cause\n2) Minimal fix\n3) Why it works\n4) Quick test steps"
+  },
+  {
+    "id": "explain-code",
+    "name": "Explain code",
+    "description": "Explain implementation, flow, and trade-offs.",
+    "prompt": "Explain this code in a practical way.\n\nCode:\n```\n[paste code here]\n```\n\nPlease include:\n- What it does\n- Step-by-step logic\n- Time/space complexity\n- Edge cases\n- How to improve readability"
+  },
+  {
+    "id": "write-api",
+    "name": "Write API",
+    "description": "Design and scaffold a production-ready API endpoint.",
+    "prompt": "Design and implement an API for this requirement:\n\nRequirement:\n[describe feature]\n\nConstraints:\n- Framework/runtime:\n- Auth model:\n- Validation rules:\n- Response shape:\n\nPlease provide:\n1) Endpoint contract\n2) Request/response examples\n3) Handler implementation\n4) Error handling\n5) Tests"
+  },
+  {
+    "id": "optimize-function",
+    "name": "Optimize function",
+    "description": "Improve performance and simplify logic safely.",
+    "prompt": "Optimize this function for performance and clarity.\n\nFunction:\n```\n[paste function here]\n```\n\nPlease provide:\n- Current bottlenecks\n- Optimized version\n- Complexity before/after\n- Trade-offs\n- Benchmark approach"
+  }
+]

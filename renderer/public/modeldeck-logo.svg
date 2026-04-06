@@ -1,0 +1,21 @@
+<svg width="1200" height="360" viewBox="0 0 1200 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="modeldeckBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2BD3FF"/>
+      <stop offset="1" stop-color="#20B9D4"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(30 30)">
+    <path d="M22 34L86 0L150 34L118 52L86 34L54 52L22 34Z" fill="url(#modeldeckBlue)"/>
+    <path d="M22 80L86 46L150 80L150 114L86 80L22 114V80Z" fill="url(#modeldeckBlue)"/>
+    <path d="M22 126L86 92L150 126V160L118 178V144L86 126L54 144V178L22 160V126Z" fill="url(#modeldeckBlue)"/>
+    <path d="M166 34L230 0L294 34L262 52L230 34L198 52L166 34Z" fill="url(#modeldeckBlue)"/>
+    <path d="M166 80L230 46L294 80V114L230 148L166 114V80Z" fill="url(#modeldeckBlue)"/>
+    <path d="M166 126L230 92L294 126V160L262 178V144L230 126L198 144V178L166 160V126Z" fill="url(#modeldeckBlue)"/>
+  </g>
+
+  <text x="380" y="220" fill="url(#modeldeckBlue)" font-size="118" font-family="Geist, Inter, Segoe UI, Arial, sans-serif" font-weight="700" letter-spacing="2">
+    MODELDECK
+  </text>
+</svg>

@@ -1,0 +1,15 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2BD3FF"/>
+      <stop offset="1" stop-color="#20B9D4"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="44" fill="#0B1420"/>
+  <path d="M44 70L96 42L148 70L122 84L96 70L70 84L44 70Z" fill="url(#logoBlue)"/>
+  <path d="M44 106L96 78L148 106V134L96 106L44 134V106Z" fill="url(#logoBlue)"/>
+  <path d="M44 142L96 114L148 142V170L122 184V156L96 142L70 156V184L44 170V142Z" fill="url(#logoBlue)"/>
+  <path d="M108 70L160 42L212 70L186 84L160 70L134 84L108 70Z" fill="url(#logoBlue)"/>
+  <path d="M108 106L160 78L212 106V134L160 162L108 134V106Z" fill="url(#logoBlue)"/>
+  <path d="M108 142L160 114L212 142V170L186 184V156L160 142L134 156V184L108 170V142Z" fill="url(#logoBlue)"/>
+</svg>
