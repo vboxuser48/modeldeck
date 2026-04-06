@@ -1,7 +1,9 @@
 import 'dotenv/config';
+import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { fileURLToPath } from 'node:url';
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, net, protocol, shell } from 'electron';
 import { registerApiIpcHandlers } from './ipc/api.js';
 import { registerOllamaIpcHandlers } from './ipc/ollama.js';
 import { registerSessionIpcHandlers } from './ipc/sessions.js';
@@ -9,6 +11,19 @@ import { registerSystemIpcHandlers } from './ipc/system.js';
 
 let mainWindow: BrowserWindow | null = null;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const APP_PROTOCOL = 'app';
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: APP_PROTOCOL,
+    privileges: {
+      standard: true,
+      secure: true,
+      supportFetchAPI: true,
+      corsEnabled: true
+    }
+  }
+]);
 
 /**
  * Uses a safe Linux IME fallback when IBUS is not configured in the session.
@@ -42,23 +57,58 @@ function registerIpcHandlers(): void {
 }
 
 /**
- * Resolves the renderer URL based on environment.
+ * Resolves the packaged renderer output directory.
  */
-function getRendererUrl(): string {
-  if (process.env.ELECTRON_START_URL) {
-    return process.env.ELECTRON_START_URL;
-  }
+function getRendererOutDirPath(): string {
+  return path.join(app.getAppPath(), 'renderer', 'out');
+}
 
-  // ASSUMPTION: Packaged renderer export is emitted under renderer/out/index.html.
-  const indexPath = path.join(app.getAppPath(), 'renderer', 'out', 'index.html');
-  return `file://${indexPath}`;
+/**
+ * Resolves the packaged renderer entry path.
+ */
+function getRendererEntryPath(): string {
+  return path.join(getRendererOutDirPath(), 'index.html');
+}
+
+/**
+ * Registers a custom app protocol so absolute Next export paths resolve in packaged builds.
+ */
+function registerAppProtocol(): void {
+  protocol.handle(APP_PROTOCOL, request => {
+    const url = new URL(request.url);
+    const requestedPath = decodeURIComponent(url.pathname);
+    const relativePath = requestedPath === '/' ? 'index.html' : requestedPath.replace(/^\//, '');
+    const normalizedPath = path.normalize(relativePath);
+    const rendererOutDir = getRendererOutDirPath();
+    const unresolvedPath = path.join(rendererOutDir, normalizedPath);
+
+    // Prevent path traversal outside the renderer export directory.
+    const relativeToOutDir = path.relative(rendererOutDir, unresolvedPath);
+    if (relativeToOutDir.startsWith('..') || path.isAbsolute(relativeToOutDir)) {
+      return new Response('Not Found', { status: 404 });
+    }
+
+    let filePath = unresolvedPath;
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+      filePath = path.join(filePath, 'index.html');
+    }
+
+    if (!fs.existsSync(filePath)) {
+      console.error(`[Renderer] Missing static asset: ${request.url} -> ${filePath}`);
+      return new Response('Not Found', { status: 404 });
+    }
+
+    return net.fetch(pathToFileURL(filePath).toString());
+  });
 }
 
 /**
  * Creates the main application window.
  */
 function createMainWindow(): BrowserWindow {
-  const appIconPath = path.join(app.getAppPath(), 'renderer', 'public', 'favicon.svg');
+  const appIconPath = app.isPackaged
+    ? path.join(app.getAppPath(), 'renderer', 'out', 'favicon.svg')
+    : path.join(app.getAppPath(), 'renderer', 'public', 'favicon.svg');
   const window = new BrowserWindow({
     width: 1600,
     height: 960,
@@ -74,8 +124,11 @@ function createMainWindow(): BrowserWindow {
     }
   });
 
-  const rendererUrl = getRendererUrl();
-  void window.loadURL(rendererUrl);
+  if (process.env.ELECTRON_START_URL) {
+    void window.loadURL(process.env.ELECTRON_START_URL);
+  } else {
+    void window.loadURL(`${APP_PROTOCOL}://-/index.html`);
+  }
 
   window.once('ready-to-show', () => {
     window.show();
@@ -92,6 +145,10 @@ function createMainWindow(): BrowserWindow {
 configureLinuxInputMethodFallback();
 
 void app.whenReady().then(() => {
+  if (!process.env.ELECTRON_START_URL) {
+    registerAppProtocol();
+  }
+
   registerIpcHandlers();
   mainWindow = createMainWindow();
 

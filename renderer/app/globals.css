@@ -8,6 +8,8 @@
   --muted-foreground: oklch(0.47 0 0);
   --accent: oklch(0.92 0 0);
   --accent-foreground: oklch(0.2 0 0);
+  --font-geist-sans: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+  --font-geist-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
 }
 
 .dark {
