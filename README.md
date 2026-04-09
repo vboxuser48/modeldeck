@@ -3,6 +3,23 @@
 ModelDeck is a cross-platform desktop AI workspace built for local-first development workflows.
 It combines an Electron desktop shell, a Next.js renderer, and a Python FastAPI local API service over Ollama.
 
+![ModelDeck Chat Workspace](docs/screenshots/chat.png)
+
+## Product Screens
+
+<p align="center">
+	<img src="docs/screenshots/chat.png" alt="ModelDeck chat landing screen" width="31%" />
+	<img src="docs/screenshots/models.png" alt="ModelDeck model library screen" width="31%" />
+	<img src="docs/screenshots/hardware_recommendation.png" alt="ModelDeck hardware recommendation screen" width="31%" />
+</p>
+
+Designed as a shipped desktop product:
+
+- Focused multi-session workspace for rapid local prompting.
+- Built-in model library with download state and compare-ready workflows.
+- Local API controls for localhost-only integrations.
+- Production packaging pipeline for Linux, Windows, and macOS.
+
 ## Highlights
 
 - Local-first AI workflow with Ollama model runtime.
@@ -242,7 +259,3 @@ npm run test:e2e
 ```
 
 3. Open a pull request.
-
-## License
-
-Add your project license information here (for example: MIT).
